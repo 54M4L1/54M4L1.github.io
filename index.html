@@ -1,461 +1,264 @@
-<!DOCTYPE html>
 <html>
+<a id="codepen-link" href="https://www.codepen.io/seanfree" target="_blank"></a>
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.1/dat.gui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
+  <style>
+    #container canvas {
+      background: #0c0c0c;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #codepen-link {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      height: 40px;
+      width: 40px;
+      z-index: 10;
+      border-radius: 50%;
+      box-sizing: border-box;
+      background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/544318/logo.jpg');
+      background-position: center center;
+      background-size: cover;
+      opacity: 0.4;
+      transition: all 0.25s;
+    }
+
+    #codepen-link:hover {
+      opacity: 0.8;
+      box-shadow: 0 0 6px #efefef;
+    }
+  </style>
+</head>
 <body>
-<!--Better on Chrome-->
 
-<canvas id='canv' class='wrapper'></canvas>
+  <div id="container">
+    <a id="codepen-link" href="https://www.codepen.io/seanfree" target="_blank"></a>
 
-<script type="x-shader/x-fragment" id="fragment">
-	#define PI 3.141592653589793
-    #define TAU 6.283185307
-
-    uniform sampler2D image;
-    uniform vec2 imageSize;
-    uniform vec2 resolution;
-    uniform float radius;
-    uniform float slices;
-    uniform float maxSize;
-    uniform float seperation;
-
-    varying vec2 vUV;
-
-    vec2 polarToCartesian( float angle, float r ) {
-        return vec2(
-            r * cos( angle ),
-            r * sin( angle )
-        );
-    }
-
-    vec3 drawCircle( vec2 center ) {
-
-        vec2 positionFromCenter = gl_FragCoord.xy - center;
-        float distancePercent = length( positionFromCenter ) / radius;
-
-        if ( distancePercent > 3.0 ) distancePercent = 1.0;
-
-        float piece = 1.0 / slices;
-
-        vec2 relativePosition = vUV - center;
-
-        vec2 positionDirection = normalize( positionFromCenter );
-
-        float angle = atan( positionDirection.y, positionDirection.x );
-        float anglePercent = ( 1.0 + ( angle / PI ) ) / 2.0;
-
-        float leftover = mod( anglePercent, piece );
-        float sectionPercent = leftover / piece;
-
-        float index = floor( anglePercent / piece );
-
-        if ( mod( index, 2.0 ) == 0.0 ) {
-            sectionPercent = 1.0 - sectionPercent;
-            leftover = piece - leftover;
-        }
-
-        vec2 uv = polarToCartesian( leftover * TAU, distancePercent * radius );
-
-        uv /= vec2( radius, maxSize );
-
-        vec2 triangleBox = vec2( radius, maxSize );
-        vec2 imageBox = imageSize;
-
-        vec2 scaleVector = triangleBox / imageBox;
-        float scale = max( scaleVector.x, scaleVector.y );
-
-        vec2 scaleBox = imageSize * scale;
-        vec2 startingPoints = scaleBox / 2.0 - triangleBox / 2.0;
-
-        vec2 coord = startingPoints + uv * triangleBox;
-
-        uv = coord / scaleBox;
-
-        return texture2D( image, uv ).rgb;
-    }
-
-
-    void main() {
-        
-        vec2 center = resolution / 2.0;
-
-        vec2 upperLeft = center - vec2( seperation );
-        vec2 upperRight = center + vec2( seperation, - seperation );
-        vec2 lowerRight = center + vec2( seperation );
-        vec2 lowerLeft = center + vec2( - seperation, seperation );
-
-        vec2 xy = gl_FragCoord.xy;
-
-        float centerDistance = distance( xy, center );
-        float upperLeftDistance = distance( xy, upperLeft );
-        float upperRightDistance = distance( xy, upperRight );
-        float lowerRightDistance = distance( xy, lowerRight );
-        float lowerLeftDistance = distance( xy, lowerLeft );
-
-        vec2 points[ 5 ];
-        points[ 0 ] = center;
-        points[ 1 ] = upperLeft;
-        points[ 2 ] = upperRight;
-        points[ 3 ] = lowerRight;
-        points[ 4 ] = lowerLeft;
-
-        float distances[ 5 ];
-        distances[ 0 ] = centerDistance;
-        distances[ 1 ] = upperLeftDistance;
-        distances[ 2 ] = upperRightDistance;
-        distances[ 3 ] = lowerRightDistance;
-        distances[ 4 ] = lowerLeftDistance;
-
-        float smallest = max( resolution.x, resolution.y );
-        vec3 pixel;
-
-        for ( int i = 0; i < 5; i++ ) {
-            if ( distances[ i ] < smallest ) {
-                smallest = distances[ i ];
-                gl_FragColor = vec4( drawCircle( points[ i ] ), 1.0 );
-            }
-        }
-    }
-</script>
-
-<script type="x-shader/x-vertex" id="vertex">
-	varying vec2 vUV;
-
-    void main() {
-        vUV = uv;
-
-        gl_Position = vec4( position, 1.00);
-    }
-</script>
-
-<style>
-  $zsvg:-12;
-$bsvg:difference;
-
-$zcanvas:3;
-$bcanvas:color-dodge ;
-
-$zcanv:-2;
-$bcanv:difference;
-
-$zbody:-3;
-$bbody:difference;
-
-$zwrapper:12;
-$bwrapper:hue;
-
-
-body {
- height: 100vh;
- width: 100%;
- overflow: hidden;
- position: absolute;
- filter: contrast(1.3) brightness(1.1);
- top: 0;
- left: 0;
- z-index: $zbody;
- background: radial-gradient(circle, hsl(6, 30%, 10%) 22%, hsla(78, 30%, 25%, .7) 100%);
- mix-blend-mode:$bbody;
-}
-
-.wrapper {
- overflow: hidden;
- background: radial-gradient(circle, hsla(157, 20%, 70%, 1)0%, hsla(257, 50%, 5%, 1)5%, hsla(82, 50%, 50%, .9)50%, hsla(190, 100%, 50%, .51));
- background-repeat: no-repeat;
- background-size: 100%;
- position: absolute;
- left: 50%;
- top: 50%;
- transform: translate(-50%, -50%);
- height: 100vh;
- width: 100vw;
- background-blend-mode: luminosity, luminosity;
- mix-blend-mode:$bwrapper;
- z-index: $zwrapper;
-}
-
-svg {
- width: 100%;
- height: 100%;
- position: absolute;
- top: 50%;
- left: 50%;
- transform: translate(-50%, -50%);
- z-index: $zsvg;
- mix-blend-mode:$bsvg;
- animation: hie 65s infinite cubic-bezier(1,.33,.002,-12.33);
-}
-
-canvas {
- position: absolute;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- display: flex;
- z-index: $zcanvas;
- mix-blend-mode:$bcanvas ;
-}
-
-#canv {
- z-index: $zcanv;
- mix-blend-mode:$bcanv;
-
-}
-
-@keyframes hie {
- 0% {
-  filter: contrast(1.1) brightness(1.5);
- }
- 50% {
-  filter: brightness(1.2) contrast(1.1) opacity(0);
- }
- 100% {
-  filter: hue-rotate(160deg) ;
-  background:white;
- }
-}
-</style>
 <script>
-  var c = document.getElementById('canv'),
-  $ = c.getContext('2d'),
-  w = c.width = window.innerWidth,
-  h = c.height = window.innerHeight,
-  t = 0, num = 1000, u=257,
-  s, a, b, 
-  x, y, _x, _y,
-  _t = 1 * .0001;
+/* jshint esversion: 6 */
+((main) => {
 
-function random(min, max) {
-  return Math.random() * (max - min) + min;
-}
+  this.requestAnimationFrame = (() => {
+    return window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      function(callback) {
+        window.setTimeout(callback, 1000 / 60);
+      };
+  })();
 
-var anim = function() {
-  window.requestAnimationFrame(anim);
-  $.globalCompositeOperation = 'destination-out';
-  $.fillStyle = 'hsla(0, 100%, 65%, .195)';
-  $.fillRect(0, 0, w, h);
-  $.globalCompositeOperation = 'lighter';
-  for (var i = 0; i < .1; i++) {
-    x = random(0,7);
-    $.beginPath();
-    for (var j = 0; j < num; j++) {
-      $.strokeStyle = 'hsla('+u*random(.01,.4)+',90%,40%,.0872)';
-      x += Math.sqrt(.8) * random(Math.sin(.9),Math.cos(200));
-      y = x * Math.atan(2*i * t + x / .01) / Math.sqrt(200);
-      _x = x * Math.cos(b) + y + Math.sin(i*j);
-      _y = x * Math.sin(b) + y * Math.cos(i);
-      b = (j*random(231,239)) * Math.PI / 2;
-      $.arc(w / 2 + _x, h / 2.1 + _y, 0.3, 0, 3 * Math.PI);
+  main(this, document, THREE);
+
+})((window, document, three, undefined) => {
+
+  'use strict';
+
+  const APP_DEFAULTS = {
+    dimensions: {
+      x: 0,
+      y: 0
+    },
+    camera: {
+      fov: 70,
+      aspectRatio: 0,
+      nearPlane: 0.1,
+      farPlane: 10000,
+      distanceX: 50,
+      distanceY: 700,
+      distanceZ: -50,
+      speedX: 0.8,
+      speedY: 0.4,
+      speedZ: 0.1
+    },
+    particles: {
+      ySegments: 100,
+      xSegments: 300,
+      size: 1,
+      color: '#67e2f2',
+      waveSpeed: 0.5,
+      waveSizeX: 250,
+      waveSizeY: 0,
+      waveSizeZ: 250
     }
-    $.stroke();
+  };
+
+  const PI = Math.PI,
+    TAU = PI * 2,
+    COS = Math.cos,
+    SIN = Math.sin;
+
+  class App {
+    constructor() {
+      let self = this;
+      self.props = (JSON.parse(JSON.stringify(APP_DEFAULTS)));
+      self.initCamera();
+      self.initScene();
+      self.initLights();
+      self.stats = new Stats();
+      document.body.appendChild(this.stats.domElement);
+      window.onresize = () => {
+        self.setSize();
+      };
+    }
+
+    setSize() {
+      this.props.dimensions.x = window.innerWidth;
+      this.props.dimensions.y = window.innerHeight;
+      this.renderer.setSize(this.props.dimensions.x, this.props.dimensions.y);
+      this.camera.aspect = this.props.camera.aspectRatio = this.props.dimensions.x / this.props.dimensions.y;
+      this.camera.updateProjectionMatrix();
+    }
+
+    initCamera() {
+      this.camera = new three.PerspectiveCamera(
+        this.props.camera.fov,
+        this.props.camera.aspectRatio,
+        this.props.camera.nearPlane,
+        this.props.camera.farPlane
+      );
+    }
+
+    initScene() {
+      this.scene = new three.Scene();
+      this.scene.add(this.camera);
+      this.renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true
+      });
+      this.setSize();
+      this.container = document.querySelector('#container');
+      this.container.appendChild(this.renderer.domElement);
+    }
+
+    initLights() {
+      this.mainLight = new three.HemisphereLight(0x000000, 0xffffff, 0.95);
+      this.mainLight.position.set(0, -500, 0);
+      this.scene.add(this.mainLight);
+
+      this.ambientLight = new three.AmbientLight(0xaaccff, 0.95);
+      this.ambientLight.position.set(-200, -100, 0);
+      this.scene.add(this.ambientLight);
+    }
+
+    render() {
+      let self = this;
+      self.stats.begin();
+      self.update();
+      self.renderer.render(self.scene, self.camera);
+      window.requestAnimationFrame(self.render.bind(self));
+      self.stats.end();
+    }
+
+    update() {}
   }
-  t += _t;
-  u-=.2;
-};
-anim();
 
-window.addEventListener('resize', function() {
-  c.width = w = window.innerWidth;
-  c.height = h = window.innerHeight;
-}, false);
+  class MandalaCloud extends App {
+    constructor() {
+      super();
+      this.tick = 0;
+      this.build();
+      this.initGUI();
+      this.render();
+    }
 
-
-// some stuff we are gonna need
-
-const TAU = Math.PI * 2;
-const PI_HALF = Math.PI * 0.5;
-
-const settings = {
-    "slices": 32,
-    "radius": 700,
-    "seperation":1000
-};
-
-const scene = new THREE.Scene();
-const renderer = new THREE.WebGLRenderer();
-const camera = new THREE.PerspectiveCamera(
-    90,
-    window.innwerWidth / window.innerHeight,
-    1,
-    10000
-);
-
-function random(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
-
-
-// The plane that the shader draws on
-
-function getTriangleSide() {
-    const angle = PI_HALF - ((TAU / settings.slices) / 2);
-    const side = 2 * settings.radius * Math.cos(angle);
-
-    return side;
-}
-
-class KaleidoPlane extends THREE.Mesh {
-    constructor(canvas, renderer) {
-        const texture = new THREE.Texture(canvas);
-
-        texture.anistropy = renderer.getMaxAnisotropy();
-        texture.needsUpdate = true;
-
-        const geometry = new THREE.PlaneBufferGeometry(2, 2, 1, 1);
-        const material = new THREE.ShaderMaterial({
-            uniforms: {
-                image: {
-                    value: texture
-                },
-                imageSize: {
-                    value: new THREE.Vector2(canvas.width, canvas.height)
-                },
-                resolution: {
-                    value: new THREE.Vector2(window.innerWidth, window.innerHeight)
-                },
-                radius: {
-                    value: settings.radius
-                },
-                slices: {
-                    value: settings.slices
-                },
-                maxSize: {
-                    value: getTriangleSide()
-                },
-                seperation: {
-                    value: settings.seperation
-                }
-            },
-
-            fragmentShader: document.getElementById("fragment").innerText,
-            vertexShader: document.getElementById("vertex").innerText
+    build() {
+      let self = this, 
+        mat = new three.PointsMaterial({
+          color: new three.Color(this.props.particles.color),
+          transparent: true,
+          depthTest: true,
+          size: 1
         });
 
-        super(geometry, material);
+      this.geometry = new three.SphereGeometry(400, this.props.particles.ySegments, this.props.particles.xSegments, 0, TAU, 0, TAU);
 
-        this.texture = texture;
+      this.pointCloud = new three.Points(this.geometry, mat);
+      this.pointCloud.sortParticles = true;
 
-        window.addEventListener("resize", function() {
-            material.uniforms.resolution.value.set(
-                window.innerWidth,
-                window.innerHeight
-            );
-            material.needsUpdate = true;
-        });
+      this.scene.add(this.pointCloud);
+      this.camera.position.set(0, -600, 600);
     }
 
     update() {
-        this.texture.needsUpdate = true;
-    }
-}
-
-
-// Texture shenanigans
-
-class Shape {
-    constructor() {
-        this.x = random(100,1024);
-        this.y = random(100,512);
-        this.width = 10 + random(33,67)*Math.PI;
-        this.height = 10 + random(23,67)+TAU;
-        this.rotation = Math.random() * TAU;
-        this.color = "#" +
-            Math.ceil(random(1,10)).toString(15) +
-            Math.ceil(random(1,5)).toString(32) +
-         
-            "4030";
-
-        this.rotate = (-Math.PI + TAU * Math.random()) / TAU / random(15,45);
+      this.tick++;
+      this.delta = this.tick * 0.005;
+      this.geometry.verticesNeedUpdate = true;
+      for (let i = 0; i < this.geometry.vertices.length; i++) {
+        let point = this.geometry.vertices[i],
+          dX = SIN(this.delta + i) * (this.props.particles.waveSizeX * 0.004),
+          dY = COS(this.delta + i) * SIN(this.delta + i) * (this.props.particles.waveSizeY * 0.004),
+          dZ = COS(this.delta + i) * (this.props.particles.waveSizeZ * 0.004);
+        point.add(new three.Vector3(dX, dY, dZ));
+      }
+      this.camera.lookAt(this.pointCloud.position);
+      this.camera.position.x = this.props.camera.distanceX * COS(this.delta * this.props.camera.speedX);
+      this.camera.position.y = this.props.camera.distanceY * COS(this.delta * this.props.camera.speedY);
+      this.camera.position.z = this.props.camera.distanceZ * COS(this.delta * this.props.camera.speedZ);
     }
 
-    update() {
-        this.rotation += this.rotate;
-    }
-}
-
-class Pattern {
-
-    constructor() {
-        this.canvas = document.createElement("canvas");
-        this.context = this.canvas.getContext("2d");
-
-        this.canvas.width = 1024;
-        this.canvas.height = 512;
-
-        this.shapes = [];
-
-        this.randomCanvas();
+    reset() {
+      this.tick = 0;
+      this.scene.remove(this.pointCloud);
+      this.build();
     }
 
-    getCanvas() {
-        return this.canvas;
+    initGUI() {
+
+      this.gui = new dat.GUI();
+      let f1 = this.gui.addFolder('إعدادات المظهر');
+
+      f1.add(this.props.camera, 'البعد العمودي').step(5).min(-700).max(700);
+      f1.add(this.props.camera, 'البعد الافقي').step(5).min(-700).max(700);
+      f1.add(this.props.camera, 'البعد الكلي').step(5).min(-700).max(700);
+
+      f1.add(this.props.camera, 'سرعة الموجة الأفقية').step(0.1).min(0).max(1);
+      f1.add(this.props.camera, 'سرعة الموجة العمودية').step(0.1).min(0).max(1);
+      f1.add(this.props.camera, 'السرعة الكلية').step(0.1).min(0).max(1);
+      f1.open();
+
+      let f2 = this.gui.addFolder('إعدادات الجسيمات');
+
+      f2.add(this.props.particles, 'قوة الموجة الأفقية').step(10).min(10).max(400).onFinishChange(() => {
+        this.reset();
+      });
+      f2.add(this.props.particles, 'قوة الموجة العمودية').step(10).min(10).max(400).onFinishChange(() => {
+        this.reset();
+      });
+      f2.add(this.props.particles, 'حجم النقاط').step(1).min(1).max(10).onChange((value) => {
+        this.pointCloud.material.size = value;
+      });
+      f2.addColor(this.props.particles, 'color').onChange((value) => {
+        this.pointCloud.material.color = new three.Color(value);
+      });
+      f2.add(this.props.particles, 'الموجة االأفقية').step(5).min(0).max(400).onFinishChange(() => {
+        this.reset();
+      });
+      f2.add(this.props.particles, 'الموجة العمودية').step(5).min(0).max(400).onFinishChange(() => {
+        this.reset();
+      });
+      f2.add(this.props.particles, 'إتجاه الموجة').step(5).min(0).max(400).onFinishChange(() => {
+        this.reset();
+      });
+
+      f2.open();
     }
+  }
 
-    update() {
-        this.context.fillStyle = "hsla(279,30%,10%,.026)";
-        this.context.fillRect(0, 0, 1024, 512);
+  window.onload = () => {
+    let mc = new MandalaCloud();
+  };
 
-        var shape;
-
-        for (var i = 0; i < this.shapes.length; i++) {
-            shape = this.shapes[i];
-            shape.update();
-
-            this.context.save();
-            this.context.translate(shape.x, shape.y);
-            this.context.rotate(shape.rotation);
-            this.context.strokeStyle = shape.color;
-            this.context.strokeRect(0, 0, shape.width, shape.height);
-            this.context.restore();
-        }
-    }
-
-    randomCanvas() {
-        for (var i = 0; i < 10+random(100,1150); i++) {
-            this.shapes.push(new Shape());
-        }
-
-        this.update();
-    }
-}
-
-// let's get this jazz setup
-
-onResize();
-
-document.body.appendChild(renderer.domElement);
-
-window.addEventListener("resize", onResize);
-
-const pattern = new Pattern();
-const plane = new KaleidoPlane(pattern.getCanvas(), renderer);
-
-scene.add(plane);
-
-render();
-
-// callbacks
-
-function onResize() {
-    const {
-        innerWidth,
-        innerHeight
-    } = window;
-
-    renderer.setSize(innerWidth, innerHeight);
-
-    camera.aspect = innerWidth / innerHeight;
-    camera.updateProjectionMatrix();
-}
-
-function render() {
-    pattern.update();
-    plane.update();
-
-    renderer.render(scene, camera);
-
-    requestAnimationFrame(render);
-}
+});
 </script>
 </body>
 </html>
