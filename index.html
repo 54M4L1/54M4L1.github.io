@@ -63,7 +63,7 @@
                            </div>
                         </nav>
                         <div class="header-btn ms-3">
-                                <a class="btn btn-secondary" href="javascript:void(0)" onclick="showContractInfo()">Buy Now</a>
+                                <a class="btn btn-secondary" href="javascript:void(0)" onclick="copyToClipboard()">Buy Now</a>
 
 <div id="contract-info" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.7); color: lightgreen; padding: 20px; border-radius: 8px; width: 300px; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); z-index: 9999;">
     <p style="margin: 0;">Contract Address:</p>
@@ -332,12 +332,6 @@
     <p>Copyright © 2025 - All Rights Reserved By <span>Mojang Games</span></p>
 </footer>
 <script>
-    // إظهار التبويب عند النقر على الزر
-    function showContractInfo() {
-        var contractInfo = document.getElementById("contract-info");
-        contractInfo.style.display = "block";
-        document.getElementById("copy-message").textContent = ""; // مسح الرسالة عند إعادة فتح التبويب
-    }
 
     // نسخ عنوان العقد إلى الحافظة
     function copyToClipboard() {
@@ -348,22 +342,7 @@
         textArea.select();
         document.execCommand("copy");
         document.body.removeChild(textArea);
-        
-        // عرض رسالة بدلاً من alert
-        var message = document.getElementById("copy-message");
-        message.textContent = "Contract address copied successfully!";
-        message.style.color = "lightgreen"; // تغيير اللون ليظهر النص بشكل جميل
 
-        // إخفاء التبويب بعد فترة قصيرة
-        setTimeout(function() {
-            document.getElementById("contract-info").style.display = "none";
-        }, 2000); // إخفاء بعد 2 ثانية
-    }
-
-    // إخفاء التبويب عند تمرير الشاشة
-    window.addEventListener("scroll", function() {
-        document.getElementById("contract-info").style.display = "none";
-    });
 </script>
            
             <script>
