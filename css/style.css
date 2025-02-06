@@ -28,7 +28,7 @@ a {
 }
 img {
     max-width: 100%;
-    filter: grayscale;
+    filter: grayscale(1);
 	
 }
 img:hover {
@@ -1035,7 +1035,8 @@ img:hover {
    }
    .contads:hover {
       text-decoration: none;
-	      border: 1px solid #00ff00;
+	   color:#00ff00;
+      border: 1px solid #00ff00;
    }
 
 #to-top {
