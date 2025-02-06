@@ -88,9 +88,14 @@
                               <h3>Minecraft Official Token Is Live Now!</h3>
                               <p>Welcome to the official website for the Minecraft Token! Dive into the world of the most iconic, adventurous, and creative cryptocurrency. $MCT Token is the currency for the Minecraft community, empowering players and creators around the globe. Stay connected with the latest updates, events, and all the exciting features Minecraft has to offer. Get ready to level up your gaming experience with $MCT Token!</p>
                               <div class="slider__btn">
-                                 <a class="contads" id="contract-address" onclick="copyAddress()">
+<a class="contads" id="contract-address" onclick="copyAddress()">
    <span>CA: 0x1234567890abcdef1234567890abcdef12345678</span>
 </a>
+
+<!-- صندوق الإشعار -->
+<div id="contract-info" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 128, 0, 0.9); color: white; padding: 10px 15px; border-radius: 5px; text-align: center; z-index: 9999;">
+    Contract Address Copied!
+</div>
                               </div>
                            </div>
                         </div>
@@ -328,15 +333,16 @@
            <footer style="background-color: black; color: lightgreen; padding: 20px; text-align: center;">
     <p>Copyright © 2025 - All Rights Reserved By <span>Mojang Games</span></p>
 </footer>
+
 <script>
 function copyAddress() {
-    const contractAddress = "YourContractAddressHere"; // ضع عنوان العقد هنا
-    navigator.clipboard.writeText(contractAddress).then(() => {
-        // إظهار الصندوق الأخضر
+    const contractText = document.getElementById("contract-address").innerText.replace("CA: ", "").trim();
+    navigator.clipboard.writeText(contractText).then(() => {
+        // إظهار إشعار النسخ
         const infoBox = document.getElementById("contract-info");
         infoBox.style.display = "block";
 
-        // إخفاء الصندوق بعد 2 ثانية
+        // إخفاء الإشعار بعد ثانيتين
         setTimeout(() => {
             infoBox.style.display = "none";
         }, 2000);
