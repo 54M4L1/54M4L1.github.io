@@ -28,7 +28,14 @@ a {
 }
 img {
     max-width: 100%;
+    filter: grayscale;
+	
 }
+img:hover {
+    max-width: 100%;
+    filter: none;
+}
+
 .btn.btn-secondary {
     display: inline-flex;
     color: #fff;
