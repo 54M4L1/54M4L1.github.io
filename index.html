@@ -63,7 +63,7 @@
                            </div>
                         </nav>
                         <div class="header-btn ms-3">
-                        <a class="btn btn-secondary" href="javascript:void(0)" onclick="copyAddress()">Buy Now</a>
+                        <a class="btn btn-secondary" href="javascript:void(0)" onclick="copyAddress(event)">Buy Now</a>
 
 <div id="contract-info" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 128, 0, 0.9); color: white; padding: 20px; border-radius: 8px; width: 300px; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); z-index: 9999;">
     <p style="margin: 0;">Contract Address Copied!</p>
@@ -338,7 +338,7 @@
 function copyAddress(event) {
     event.preventDefault(); // منع السلوك الافتراضي للرابط
 
-    // استخدام طريقة أفضل لاستخراج العنوان
+    // الحصول على العنوان من العنصر <span> داخل #contract-address
     const contractElement = document.getElementById("contract-address").querySelector("span");
     if (!contractElement) return;
 
@@ -349,7 +349,7 @@ function copyAddress(event) {
     tempInput.value = contractText;
     document.body.appendChild(tempInput);
     tempInput.select();
-    document.execCommand("copy"); // طريقة تقليدية تعمل على جميع المتصفحات
+    document.execCommand("copy"); // طريقة تعمل على جميع المتصفحات
     document.body.removeChild(tempInput);
 
     // إظهار إشعار النسخ
