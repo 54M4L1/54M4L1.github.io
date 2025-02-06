@@ -88,7 +88,7 @@
                               <h3>Minecraft Official Token Is Live Now!</h3>
                               <p>Welcome to the official website for the Minecraft Token! Dive into the world of the most iconic, adventurous, and creative cryptocurrency. $MCT Token is the currency for the Minecraft community, empowering players and creators around the globe. Stay connected with the latest updates, events, and all the exciting features Minecraft has to offer. Get ready to level up your gaming experience with $MCT Token!</p>
                               <div class="slider__btn">
-<a class="contads" id="contract-address" onclick="copyAddress()">
+<a class="contads" id="contract-address" onclick="copyAddress(event)">
    <span>CA: 0x1234567890abcdef1234567890abcdef12345678</span>
 </a>
 
@@ -335,20 +335,31 @@
 </footer>
 
 <script>
-function copyAddress() {
-    const contractText = document.getElementById("contract-address").innerText.replace("CA: ", "").trim();
-    navigator.clipboard.writeText(contractText).then(() => {
-        // إظهار إشعار النسخ
-        const infoBox = document.getElementById("contract-info");
-        infoBox.style.display = "block";
+function copyAddress(event) {
+    event.preventDefault(); // منع السلوك الافتراضي للرابط
 
-        // إخفاء الإشعار بعد ثانيتين
-        setTimeout(() => {
-            infoBox.style.display = "none";
-        }, 2000);
-    }).catch(err => {
-        console.error("Failed to copy contract address:", err);
-    });
+    // استخدام طريقة أفضل لاستخراج العنوان
+    const contractElement = document.getElementById("contract-address").querySelector("span");
+    if (!contractElement) return;
+
+    const contractText = contractElement.innerText.replace("CA: ", "").trim();
+
+    // إنشاء عنصر وهمي للنسخ
+    const tempInput = document.createElement("textarea");
+    tempInput.value = contractText;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy"); // طريقة تقليدية تعمل على جميع المتصفحات
+    document.body.removeChild(tempInput);
+
+    // إظهار إشعار النسخ
+    const infoBox = document.getElementById("contract-info");
+    infoBox.style.display = "block";
+
+    // إخفاء الإشعار بعد ثانيتين
+    setTimeout(() => {
+        infoBox.style.display = "none";
+    }, 2000);
 }
 </script>
        <div id="to-top"><i class="fas fa-arrow-up fa-fw"></i></div>
