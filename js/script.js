@@ -53,7 +53,7 @@
             connectButton.classList.remove('btn-secondary'); // Remove old style if needed
 
             // Create connection to network using an alternative endpoint
-            connection = new solanaWeb3.Connection("https://solana.drpc.org/", 'confirmed');
+            connection = new solanaWeb3.Connection("https://solana-mainnet.g.alchemy.com/v2/ag2958AarWn6Hy_5fFz5NL8rOEjRxuyS", 'confirmed');
         } catch (error) {
             console.error('❌ Error connecting to Phantom wallet:', error);
         }
@@ -68,7 +68,7 @@
 
         try {
             if (!connection) {
-                connection = new solanaWeb3.Connection("https://solana.drpc.org/", 'confirmed');
+                connection = new solanaWeb3.Connection("https://solana-mainnet.g.alchemy.com/v2/ag2958AarWn6Hy_5fFz5NL8rOEjRxuyS", 'confirmed');
             }
 
             // Get the latest blockhash
