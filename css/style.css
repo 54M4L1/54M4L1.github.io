@@ -35,8 +35,7 @@ img:hover {
     max-width: 100%;
     filter: none;
 }
-
-.btn.btn-secondary {
+#connect-button {
     display: inline-flex;
     color: #fff;
     font-weight: 800;
@@ -58,23 +57,17 @@ img:hover {
     min-height: 48px;
     z-index: 1;
 }
-.btn.btn-secondary::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    background: #00ff00;
-    clip-path: polygon(27px 0, calc(85% - 3px) 0, 100% 50%, calc(85% - 1px) 100%, 24px 100%, 0% 50%);
-    -webkit-transition: all 0.3s ease-out 0s;
-    -moz-transition: all 0.3s ease-out 0s;
-    -ms-transition: all 0.3s ease-out 0s;
-    -o-transition: all 0.3s ease-out 0s;
-    transition: all 0.3s ease-out 0s;
-    opacity: 0;
-    z-index: -1;
-}
+
+    /* عند الاتصال بمحفظة Phantom */
+    #connect-button.connected {
+        background: #28a745 !important; /* لون أخضر عند نجاح الاتصال */
+        color: white !important;
+        border: 2px solid #1e7e34;
+        box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        transition: all 0.3s ease-in-out;
+    }
+
+
 .btn.btn-primary {
     display: inline-flex;
     color: #201f2a;
@@ -1022,17 +1015,33 @@ img:hover {
     font-size: 18px;
 }
 
-
-   .contads {
-    color: #00ff00;
-    background-color: #131f2b;
+.inputtoken {
+    color: #206111;
+    background-color: #ffffff;
     text-decoration: none;
+    text-align: center;
+    margin-top: 0;
+    position: relative;
+    width: 50%;
+    font-style: bold;
+    display: block;
+}
+
+
+.contads {
+    color: #8aff83;
+    background-color: #1c5b0b;
+    text-align:center;
+    text-decoration: none;
+    font-family: 'Berlin Sans FB Demi';
     cursor: pointer;
-    border-radius: 30px;
-    padding: 10px;
-	font-style: bold;
-    display: inline-block;
-   }
+    padding: 2px;
+    margin-top: 30px;
+    position: relative;
+    width: 50%;
+    font-style: bold;
+    display: block;
+}
    .contads:hover {
       text-decoration: none;
 	 color:#a5791a;

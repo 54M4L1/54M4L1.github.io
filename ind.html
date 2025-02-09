@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Purchase System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.33.0/lib/index.iife.js"></script>
+    <script src="/js/script.js"></script>
+
+    <body>
+        <h1>نظام شراء التوكنات</h1>
+
+        <!-- زر الاتصال بالمحفظة -->
+        <button id="connect-button">اتصال بالمحفظة</button>
+
+        <!-- عرض حالة الاتصال بالمحفظة -->
+        <div id="wallet-status">لم تتصل بأي محفظة بعد.</div>
+
+        <h2>شراء التوكنات:</h2>
+
+        <!-- صندوق إدخال عدد التوكنات -->
+        <input type="number" id="tokens" placeholder="أدخل عدد التوكنات" />
+
+        <!-- زر إتمام عملية الشراء -->
+        <button id="buy-button">شراء التوكنات</button>
+
+        <!-- عرض حالة المعاملة -->
+        <div id="transaction-status"></div>
+
+
+    </body>
+</html>
