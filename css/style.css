@@ -28,12 +28,12 @@ a {
 }
 img {
     max-width: 100%;
-    filter: grayscale(1);
+    filter: none;
 	
 }
 img:hover {
     max-width: 100%;
-    filter: none;
+    filter: invert;
 }
 #connect-button {
     display: inline-flex;
