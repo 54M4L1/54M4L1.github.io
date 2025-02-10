@@ -33,7 +33,7 @@ img {
 }
 img:hover {
     max-width: 100%;
-    filter: invert;
+    filter: invert(1);
 }
 #connect-button {
     display: inline-flex;
