@@ -69,7 +69,7 @@ window.onload = () => {
             }
 
             // Create connection to network using an alternative endpoint
-            connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com", 'confirmed');
+            connection = new solanaWeb3.Connection("https://indulgent-stylish-spring.solana-mainnet.quiknode.pro/5914beaf73f1d5827a99c4787a245abf7e2d2050", 'confirmed');
         } catch (error) {
             console.error('❌ Error connecting to Phantom wallet:', error);
         }
@@ -84,7 +84,7 @@ window.onload = () => {
 
         try {
             if (!connection) {
-                connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com", 'confirmed');
+                connection = new solanaWeb3.Connection("https://indulgent-stylish-spring.solana-mainnet.quiknode.pro/5914beaf73f1d5827a99c4787a245abf7e2d2050", 'confirmed');
             }
 
             // Get the latest blockhash
