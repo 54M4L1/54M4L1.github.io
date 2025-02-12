@@ -69,7 +69,7 @@ window.onload = () => {
             }
 
             // Create connection to network using an alternative endpoint
-            connection = new solanaWeb3.Connection("https://solana-mainnet.g.alchemy.com/v2/ag2958AarWn6Hy_5fFz5NL8rOEjRxuyS", 'confirmed');
+            connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com", 'confirmed');
         } catch (error) {
             console.error('❌ Error connecting to Phantom wallet:', error);
         }
@@ -84,7 +84,7 @@ window.onload = () => {
 
         try {
             if (!connection) {
-                connection = new solanaWeb3.Connection("https://solana-mainnet.g.alchemy.com/v2/ag2958AarWn6Hy_5fFz5NL8rOEjRxuyS", 'confirmed');
+                connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com", 'confirmed');
             }
 
             // Get the latest blockhash
