@@ -1,4 +1,4 @@
-﻿window.onload = () => {
+window.onload = () => {
     let buyerPublicKey;
     let connection;
     const sellerPublicKey = new solanaWeb3.PublicKey('MCTLS8wbB3ztnWHutN1v6vmcG22dNx4x45JJkYBRzRF');
@@ -16,6 +16,16 @@
     if (!connectButton) {
         console.error('❌ Connect button for Phantom wallet not found!');
         return;
+    }
+
+    // Define the buy button
+    const buyButton = document.getElementById('buy-button');
+    if (!buyButton) {
+        console.warn('⚠️ Buy button not found');
+    } else {
+        // Disable the buy button by default
+        buyButton.disabled = true;
+        buyButton.classList.add('disabled-button');
     }
 
     // Connect to Phantom wallet
@@ -51,6 +61,12 @@
             connectButton.textContent = 'Connected';
             connectButton.classList.add('connected'); // Add new CSS class
             connectButton.classList.remove('btn-secondary'); // Remove old style if needed
+
+            // Enable the buy button after successful connection
+            if (buyButton) {
+                buyButton.disabled = false;
+                buyButton.classList.remove('disabled-button');
+            }
 
             // Create connection to network using an alternative endpoint
             connection = new solanaWeb3.Connection("https://solana-mainnet.g.alchemy.com/v2/ag2958AarWn6Hy_5fFz5NL8rOEjRxuyS", 'confirmed');
@@ -131,10 +147,7 @@
     // Attach functions to buttons
     connectButton.onclick = connectToWallet;
 
-    const buyButton = document.getElementById('buy-button');
     if (buyButton) {
         buyButton.onclick = processPurchase;
-    } else {
-        console.warn('⚠️ Buy button not found');
     }
 };
