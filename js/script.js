@@ -121,7 +121,7 @@ window.onload = () => {
             const signature = await connection.sendRawTransaction(signedTransaction.serialize());
 
             console.log('✅ Transaction successful! Signature:', signature);
-            document.getElementById('transaction-status').textContent = `Transaction successful! Signature: ${signature}`;
+            document.getElementById('wallet-status').textContent = `Transaction successful! Signature: ${signature}`;
         } catch (error) {
             console.error('❌ Error during the transaction:', error);
             document.getElementById('transaction-status').textContent = `❌ Error: ${error.message}`;
