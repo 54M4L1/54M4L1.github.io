@@ -1047,6 +1047,11 @@ img:hover {
 	 color:#a5791a;
      background-color:black;
    }
+.disabled-button {
+    background-color: gray;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
 
 #to-top {
     height: 45px;
