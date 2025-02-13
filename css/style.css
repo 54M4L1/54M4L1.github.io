@@ -70,6 +70,19 @@ img:hover {
         }
 }
 
+.wallet-message {
+    color: red;
+}
+
+@media (max-width: 768px) {
+    .wallet-message::before {
+        content: "Mobile users cannot access the presale event.";
+        color: blue; /* يمكنك تغيير اللون كما تشاء */
+    }
+}
+
+
+
 #connect-button {
     display: inline-flex;
     color: #fff;
