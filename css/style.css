@@ -70,6 +70,7 @@ img:hover {
         }
 }
 
+
 .wallet-message {
     color: red;
 }
@@ -80,8 +81,6 @@ img:hover {
         color: blue; /* يمكنك تغيير اللون كما تشاء */
     }
 }
-
-
 
 #connect-button {
     display: inline-flex;
