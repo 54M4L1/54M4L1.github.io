@@ -76,7 +76,7 @@ img:hover {
 }
 
 @media (max-width: 768px) {
-    .wallet-message::before {
+    .wallet-message {
         content: "Mobile users cannot access the presale event.";
         color: blue; /* يمكنك تغيير اللون كما تشاء */
     }
