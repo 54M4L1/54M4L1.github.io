@@ -1103,6 +1103,11 @@ img:hover {
     cursor: not-allowed;
     opacity: 0.6;
 }
+@media (max-width: 768px) {
+    .contads {
+    display: none;
+    }
+}
 
 #to-top {
     height: 45px;
