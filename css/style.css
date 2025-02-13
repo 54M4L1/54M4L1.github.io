@@ -1068,7 +1068,7 @@ img:hover {
 }
 @media (max-width: 768px) {
     .inputtoken {
-        left:50%;
+    display: none;
     }
 }
 
