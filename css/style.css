@@ -1066,7 +1066,11 @@ img:hover {
     font-style: bold;
     display: block;
 }
-
+@media (max-width: 768px) {
+    .inputtoken {
+        left:50%;
+    }
+}
 
 .contads {
     color: #8aff83;
