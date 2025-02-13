@@ -57,6 +57,19 @@ img:hover {
                 width: 30px;
                 height: 30px;
             }
+
+@media (max-width: 600px) {
+    .social-icons {
+        right: 10px; /* تقليل المسافة على الشاشات الصغيرة */
+        z-index: 9999;
+    }
+
+        .social-icons a img {
+            width: 35px; /* تقليل حجم الأيقونات */
+            height: 35px;
+        }
+}
+
 #connect-button {
     display: inline-flex;
     color: #fff;
